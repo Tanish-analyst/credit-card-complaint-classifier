@@ -4,9 +4,8 @@ import streamlit as st
 import requests
 
 # -------- CONFIG --------
-API_URL = "http://127.0.0.1:8000/predict"  # Change if deployed
+API_URL = "https://credit-card-complaint-classifier-1.onrender.com/predict" 
 
-# Custom styles for professional look
 st.set_page_config(page_title="Credit Card Complaint Classifier", page_icon="💳", layout="centered")
 
 st.markdown("""
