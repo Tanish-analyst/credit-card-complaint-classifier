@@ -2,7 +2,7 @@
 
 A **BERT-based NLP model** that automatically categorizes credit card complaints into predefined classes with a confidence threshold.  
 
-🔗 **Live Demo**: (https://credit-card-complaint-classifier.streamlit.app/)
+🔗 **Live Demo**: [Click here to try the app](https://credit-card-complaint-classifier.streamlit.app/)
 
 ---
 
