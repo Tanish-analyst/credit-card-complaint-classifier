@@ -27,10 +27,26 @@ def home():
 
 @app.post("/predict")
 def predict(data: ComplaintInput):
-    inputs = tokenizer(data.text, return_tensors="pt", truncation=True, padding=True)
-    outputs = model(**inputs)
-    logits = outputs.logits
-    predicted_class_id = torch.argmax(logits).item()
-    predicted_label = label_map.get(predicted_class_id, "unknown")
+    # Tokenize input
+    inputs = tokenizer(data.text, return_tensors="pt", truncation=True, padding=True, max_length=128)
 
-    return {"prediction": predicted_label}
+    # Get model outputs
+    with torch.no_grad():
+        outputs = model(**inputs)
+        logits = outputs.logits
+        probs = torch.nn.functional.softmax(logits, dim=1)
+
+    # Get prediction and confidence
+    predicted_class_id = torch.argmax(probs, dim=1).item()
+    confidence = torch.max(probs).item()
+
+    # Apply confidence threshold
+    if confidence < 0.70:
+        predicted_label = "other complaint"
+    else:
+        predicted_label = label_map.get(predicted_class_id, "unknown")
+
+    return {
+        "prediction": predicted_label,
+        "confidence": round(confidence, 4) 
+    }
